@@ -1,0 +1,348 @@
+Project : Tax Calculation Applications
+
+
+package Project;
+
+import java.util.*;
+import java.io.*;
+
+class User {
+    private String username;
+    private String password;
+
+    public User(String username, String password) {
+        this.username = username;
+        this.password = password;
+    }
+
+    public boolean checkCredentials(String username, String password) {
+        return this.username.equals(username) && this.password.equals(password);
+    }
+}
+
+class Property {
+    private double baseValue;
+    private boolean inCity;
+    private double ageFactor;
+    private double builtUpArea;
+
+    // Constructors, getters, and setters
+    public Property() {
+    }
+
+    public Property(double baseValue, boolean inCity, double ageFactor, double builtUpArea) {
+        this.baseValue = baseValue;
+        this.inCity = inCity;
+        this.ageFactor = ageFactor;
+        this.builtUpArea = builtUpArea;
+    }
+
+    public double calculatePropertyTax() {
+        double tax;
+        if (inCity) {
+            tax = (builtUpArea * ageFactor * baseValue) + (0.5 * builtUpArea);
+        } else {
+            tax = builtUpArea * ageFactor * baseValue;
+        }
+        return tax;
+    }
+
+    public double getBaseValue() {
+        return baseValue;
+    }
+
+    public void setBaseValue(double baseValue) {
+        this.baseValue = baseValue;
+    }
+
+    public boolean isInCity() {
+        return inCity;
+    }
+
+    public void setInCity(boolean inCity) {
+        this.inCity = inCity;
+    }
+
+    public double getAgeFactor() {
+        return ageFactor;
+    }
+
+    public void setAgeFactor(double ageFactor) {
+        this.ageFactor = ageFactor;
+    }
+
+    public double getBuiltUpArea() {
+        return builtUpArea;
+    }
+
+    public void setBuiltUpArea(double builtUpArea) {
+        this.builtUpArea = builtUpArea;
+    }
+}
+
+class Vehicle {
+    private String registrationNumber;
+    private String brand;
+    private double purchaseCost;
+    private double velocity;
+    private int capacity;
+    private int vehicleType; // 1 for petrol, 2 for diesel, 3 for CNG/LPG
+
+    // Constructors, getters, and setters
+    public Vehicle() {
+    }
+
+    public Vehicle(String registrationNumber, String brand, double purchaseCost, double velocity, int capacity,
+            int vehicleType) {
+        this.registrationNumber = registrationNumber;
+        this.brand = brand;
+        this.purchaseCost = purchaseCost;
+        this.velocity = velocity;
+        this.capacity = capacity;
+        this.vehicleType = vehicleType;
+    }
+
+    public double calculateVehicleTax() {
+        double tax;
+        if (vehicleType == 1) {
+            tax = velocity + capacity + (0.10 * purchaseCost);
+        } else if (vehicleType == 2) {
+            tax = velocity + capacity + (0.11 * purchaseCost);
+        } else if (vehicleType == 3) {
+            tax = velocity + capacity + (0.12 * purchaseCost);
+        } else {
+            // Handle invalid vehicle type
+            tax = 0;
+        }
+        return tax;
+    }
+
+    public String getRegistrationNumber() {
+        return registrationNumber;
+    }
+
+    public void setRegistrationNumber(String registrationNumber) {
+        this.registrationNumber = registrationNumber;
+    }
+
+    public String getBrand() {
+        return brand;
+    }
+
+    public void setBrand(String brand) {
+        this.brand = brand;
+    }
+
+    public double getPurchaseCost() {
+        return purchaseCost;
+    }
+
+    public void setPurchaseCost(double purchaseCost) {
+        this.purchaseCost = purchaseCost;
+    }
+
+    public double getVelocity() {
+        return velocity;
+    }
+
+    public void setVelocity(double velocity) {
+        this.velocity = velocity;
+    }
+
+    public int getCapacity() {
+        return capacity;
+    }
+
+    public void setCapacity(int capacity) {
+        this.capacity = capacity;
+    }
+
+    public int getVehicleType() {
+        return vehicleType;
+    }
+
+    public void setVehicleType(int vehicleType) {
+        this.vehicleType = vehicleType;
+    }
+}
+
+public class TaxCalculatorApp {
+    public static void main(String[] args) {
+        // Create a user account (You can replace these credentials with your own)
+        User user = new User("mayur", "password");
+
+        List<Property> properties = new ArrayList<>();
+        List<Vehicle> vehicles = new ArrayList<>();
+
+        Scanner scanner = new Scanner(System.in);
+
+        // Prompt for login
+        System.out.println("Welcome to Tax Calculator App");
+        System.out.println("------------------------------------------");
+        System.out.print("Enter username: ");
+        String username = scanner.nextLine();
+        System.out.print("Enter password: ");
+        String password = scanner.nextLine();
+
+        if (user.checkCredentials(username, password)) {
+            System.out.println("Login successful!");
+            System.out.println("=========================================");
+
+            while (true) {
+            	System.out.println("Display Main Menu : ");
+                System.out.println("1. Add Property");
+                System.out.println("2. Add Vehicle");
+                System.out.println("3. Calculate Total Tax");
+                System.out.println("4. Close Application");
+                System.out.print("Enter your choice: ");
+
+                try {
+                    int choice = scanner.nextInt();
+                    scanner.nextLine(); // Consume the newline character
+
+                    switch (choice) {
+                        case 1:
+                        	System.out.println("=========================================");
+                            // Add Property
+                            Property property = new Property();
+                            System.out.print("Enter base value a Property : ");
+                            property.setBaseValue(scanner.nextDouble());
+                            scanner.nextLine(); // Consume the newline character
+                            System.out.print("Enter the age of Land in years : ");
+                            property.setAgeFactor(scanner.nextDouble());
+                            System.out.print("Enter built-up area of land : ");
+                            property.setBuiltUpArea(scanner.nextDouble());
+                            System.out.print("Is the property in the city? (true/false): ");
+                            property.setInCity(scanner.nextBoolean());
+
+                            properties.add(property);
+                            System.out.println("Property added successfully!");
+                            System.out.println("=========================================");
+                            break;
+
+                        case 2:
+                        	System.out.println("=========================================");
+                            // Add Vehicle
+                            Vehicle vehicle = new Vehicle();
+                            System.out.print("Enter registration number: ");
+                            vehicle.setRegistrationNumber(scanner.nextLine());
+                            System.out.print("Enter Vehicle brand: ");
+                            vehicle.setBrand(scanner.nextLine());
+                            System.out.print("Enter purchase of vehicle : ");
+                            vehicle.setPurchaseCost(scanner.nextDouble());
+                            System.out.print("Enter velocity: ");
+                            vehicle.setVelocity(scanner.nextDouble());
+                            System.out.print("Enter seat  capacity: ");
+                            vehicle.setCapacity(scanner.nextInt());
+                            System.out.print("Enter vehicle type (1 for petrol, 2 for diesel, 3 for CNG/LPG): ");
+                            vehicle.setVehicleType(scanner.nextInt());
+
+                            vehicles.add(vehicle);
+                            System.out.println("Vehicle added successfully!");
+                            System.out.println("=========================================");
+                            break;
+
+                        case 3:
+                        	System.out.println("=========================================");
+                            // Calculate Total Tax
+                            double totalPropertyTax = properties.stream().mapToDouble(Property::calculatePropertyTax).sum();
+                            double totalVehicleTax = vehicles.stream().mapToDouble(Vehicle::calculateVehicleTax).sum();
+                            double totalTax = totalPropertyTax + totalVehicleTax;
+                            
+                            System.out.println("Total Property Tax:"+"\t"+"Total Vehicle Tax: "+"\t"+"Total Tax Payable: " );
+                            System.out.println(totalPropertyTax + "\t\t"+ totalVehicleTax + "\t\t"+ totalTax);
+                           // System.out.println("Total Vehicle Tax: " + totalVehicleTax);
+                          //  System.out.println("Total Tax Payable: " + totalTax);
+                            System.out.println("=========================================");
+                            break;
+
+                        case 4:
+                            // Close Application
+                            System.out.println("Closing Application...");
+                            scanner.close();
+                            System.exit(0);
+
+                        default:
+                            System.out.println("Invalid choice. Please try again.");
+                    }
+                } 
+                catch (InputMismatchException e) {
+                    System.out.println("Invalid input. Please enter a valid number.");
+                    scanner.nextLine(); // Consume the invalid input
+                }
+            }
+        } else {
+            System.out.println("Login failed. Incorrect username or password.");
+        }
+    }
+}
+
+
+
+
+Output
+
+Welcome to Tax Calculator App
+------------------------------------------
+Enter username: mayur
+Enter password: password
+Login successful!
+=========================================
+Display Main Menu : 
+1. Add Property
+2. Add Vehicle
+3. Calculate Total Tax
+4. Close Application
+Enter your choice: 1
+=========================================
+Enter base value a Property : 2000000
+Enter the age of Land in years : 3
+Enter built-up area of land : 1200
+Is the property in the city? (true/false): true
+Property added successfully!
+=========================================
+Display Main Menu : 
+1. Add Property
+2. Add Vehicle
+3. Calculate Total Tax
+4. Close Application
+Enter your choice: 1
+=========================================
+Enter base value a Property : 1000000
+Enter the age of Land in years : 2
+Enter built-up area of land : 1500
+Is the property in the city? (true/false): false
+Property added successfully!
+=========================================
+Display Main Menu : 
+1. Add Property
+2. Add Vehicle
+3. Calculate Total Tax
+4. Close Application
+Enter your choice: 2
+=========================================
+Enter registration number: 2345686779
+Enter Vehicle brand: Active
+Enter purchase of vehicle : 60000
+Enter velocity: 110
+Enter seat  capacity: 2
+Enter vehicle type (1 for petrol, 2 for diesel, 3 for CNG/LPG): 1
+Vehicle added successfully!
+=========================================
+Display Main Menu : 
+1. Add Property
+2. Add Vehicle
+3. Calculate Total Tax
+4. Close Application
+Enter your choice: 3
+=========================================
+Total Property Tax:	Total Vehicle Tax: 	Total Tax Payable: 
+1.02000006E10		6112.0		      1.0200006712E10
+=========================================
+Display Main Menu : 
+1. Add Property
+2. Add Vehicle
+3. Calculate Total Tax
+4. Close Application
+Enter your choice: 4
+Closing Application...
